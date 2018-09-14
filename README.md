@@ -16,8 +16,8 @@ The purpose of this software is to retrieve an account's trade history and recor
 ## Installation
 
 	cd ~
-	git clone https://github.com/roderickmonk/get-trades.git
-	cd get-trades
+	git clone https://github.com/roderickmonk/poloniex-get-trades.git
+	cd poloniex-get-trades
 	npm install
 
 ##	get-trades ##
