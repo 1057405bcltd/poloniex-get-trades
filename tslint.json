@@ -1,0 +1,26 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "arrow-parens": false,
+        "no-empty": false,
+        "no-var-requires": false,
+        "ordered-imports": [
+            false,
+            {
+                "import-sources-order": "case-insensitive",
+                "named-imports-order": "lowercase-first"
+            }
+        ],
+        "indent": [false, "tabs", 1],
+        "max-line-length": {
+            "options": [
+                200
+            ]
+        }
+    },
+    "rulesDirectory": []
+}

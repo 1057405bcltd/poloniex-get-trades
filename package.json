@@ -1,0 +1,30 @@
+{
+  "name": "hft",
+  "version": "1.0.0",
+  "description": "Cryptocurrency High Frequency Trading",
+  "main": "./lib/hftDaemon.js",
+  "author": "Rod Monk",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "test": "./scripts/test",
+    "release": "./scripts/hft-release"
+  },
+  "dependencies": {
+    "@types/node": "^8.10.29",
+    "fs-extra": "^5.0.0",
+    "json2csv": "^3.11.5",
+    "lodash": "^4.17.11",
+    "lodash.create": "^4.2.0",
+    "moment": "^2.22.2",
+    "npm": "^5.10.0",
+    "poloniex-api-node": "^1.9.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "request-promise-native": "^1.0.5",
+    "tslint": "^5.11.0",
+    "typescript": "^2.9.2"
+  },
+  "devDependencies": {}
+}
