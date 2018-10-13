@@ -14,7 +14,7 @@ const _ = require("lodash");
 const assert = require('assert');
 var fs = require('fs-extra');
 const Json2csvParser = require('json2csv').Parser;
-const json2csvParser = new Json2csvParser();
+const json2csvParser = new Json2csvParser({ header: false });
 const Poloniex = require('poloniex-api-node');
 let poloniex = new Poloniex(process.env.POLONIEX_API_KEY, process.env.POLONIEX_API_SECRET, { socketTimeout: 60000 });
 const timer = (timeout) => new Promise((resolve, reject) => {
@@ -27,19 +27,6 @@ const timer = (timeout) => new Promise((resolve, reject) => {
 });
 const startOfEpoch = "2016-01-01";
 console.log("Start of Epoch: ", startOfEpoch);
-const isSorted = (trades) => {
-    if (trades.length === 0 || trades.length === 1) {
-        return true;
-    }
-    let i;
-    if (trades[0].date <= trades[1].date) {
-        for (i = 0; i < trades.length - 1 && moment(trades[i].date) <= moment(trades[i + 1].date); i++) { }
-    }
-    else {
-        for (i = 0; i < trades.length - 1 && moment(trades[i].date) >= moment(trades[i + 1].date); i++) { }
-    }
-    return i === trades.length - 1;
-};
 const filename = process.argv[2];
 const saveToCsv = (trades, market) => __awaiter(this, void 0, void 0, function* () {
     try {
@@ -89,8 +76,6 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
         }
         if (trades.length === 10000) {
             yield getTrades(market, moment(sortedTrades[0].date), endRange);
-            tradesMap.size ? yield saveToCsv(Array.from(tradesMap.values()), market) : _.noop;
-            process.exit(0);
             yield getTrades(market, startRange, moment(sortedTrades[sortedTrades.length - 1].date));
         }
     }
