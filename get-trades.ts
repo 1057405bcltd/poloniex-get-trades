@@ -3,13 +3,19 @@
 import * as moment from "moment";
 import * as _ from "lodash";
 
-const assert = require('assert');
-var fs = require('fs-extra');
-const Json2csvParser = require('json2csv').Parser;
+const assert = require("assert");
+const fs = require("fs-extra");
+const Json2csvParser = require("json2csv").Parser;
 const json2csvParser = new Json2csvParser({ header: false });
 
-const Poloniex = require('poloniex-api-node');
-let poloniex = new Poloniex(process.env.POLONIEX_API_KEY, process.env.POLONIEX_API_SECRET, { socketTimeout: 60000 });
+const Poloniex = require("poloniex-api-node");
+const poloniex = new Poloniex(
+  process.env.POLONIEX_API_KEY,
+  process.env.POLONIEX_API_SECRET,
+  {
+    socketTimeout: 60000,
+  },
+);
 
 const timer = (timeout) => new Promise((resolve, reject) => {
   try {
@@ -21,9 +27,9 @@ const timer = (timeout) => new Promise((resolve, reject) => {
 
 const startOfEpoch = "2016-01-01";
 
-type PoloniexTrade = {
-  globalTradeID: string
-  date: string
+interface IPoloniexTrade {
+  globalTradeID: string;
+  date: string;
 }
 
 console.log("Start of Epoch: ", startOfEpoch);
@@ -34,12 +40,17 @@ const saveToCsv = async (trades: Array<any>, market: string) => {
 
   try {
 
+    console.log ('Before CSV');
+
     const data = trades.map(trade => ({ market, ...trade }));
+
+    console.log ('After CSV');
+
 
     const csvTrades = json2csvParser.parse(data);
 
-    await fs.outputFile(filename, csvTrades, { 'flag': 'a' });
-    await fs.outputFile(filename, '\r', { 'flag': 'a' });
+    await fs.outputFile(filename, csvTrades, { flag: "a" });
+    await fs.outputFile(filename, "\r", { flag: "a" });
 
     console.log(`\n${market} Trades Saved: ${trades.length}`);
 
@@ -61,7 +72,7 @@ const getTradeHistory = async (market, start, end, limit) => {
         market,
         start,
         end,
-        limit) as Array<PoloniexTrade>;
+        limit) as IPoloniexTrade[];
 
       return trades;
     }
@@ -82,15 +93,13 @@ const getTrades = async (market: string, startRange, endRange) => {
 
     await timer(150);
 
-    process.stdout.write('.')
-
     const trades = await getTradeHistory(
       market,
       startRange.unix(),
       endRange.unix(),
-      10000) as Array<PoloniexTrade>;
+      10000) as IPoloniexTrade[];
 
-    console.log({ trades })
+    console.log({ trades });
 
     const sortedTrades = trades.sort((a, b) => {
 
@@ -101,7 +110,7 @@ const getTrades = async (market: string, startRange, endRange) => {
       } else {
         return 0;
       }
-    }) as Array<PoloniexTrade>;
+    }) as IPoloniexTrade[];
 
     for (const trade of sortedTrades) {
 
@@ -119,12 +128,23 @@ const getTrades = async (market: string, startRange, endRange) => {
   }
 }
 
+/*
+
+The function getTrades (market, start, end) is recursive as follows.
+If the call to getTradeHistory() returns 10000 records (the maximum possible),
+then getTrades recursively calls itself twice, like so:
+
+• getTrades (market, start, midPoint);
+• getTrades (market, midPoint, end);
+
+*/
+
 (async () => {
 
   try {
 
-    if (process.argv.length != 3) {
-      console.log('Usage: gettrades outfile');
+    if (process.argv.length !== 3) {
+      console.log("Usage: gettrades outfile");
       process.exit(1);
     }
 
@@ -135,10 +155,10 @@ const getTrades = async (market: string, startRange, endRange) => {
 
     for (const market of markets) {
 
-      console.log('\nCapturing Trades Data For Market: ', market);
+      console.log("\nCapturing Trades Data For Market: ", market);
 
       tradesMap.clear();
-      await getTrades(market, moment(startOfEpoch), moment().startOf('day'));
+      await getTrades(market, moment(startOfEpoch), moment().startOf("day"));
 
       tradesMap.size ? await saveToCsv(Array.from(tradesMap.values()), market) : _.noop;
     }

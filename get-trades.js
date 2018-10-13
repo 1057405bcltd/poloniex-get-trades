@@ -11,12 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const moment = require("moment");
 const _ = require("lodash");
-const assert = require('assert');
-var fs = require('fs-extra');
-const Json2csvParser = require('json2csv').Parser;
+const assert = require("assert");
+const fs = require("fs-extra");
+const Json2csvParser = require("json2csv").Parser;
 const json2csvParser = new Json2csvParser({ header: false });
-const Poloniex = require('poloniex-api-node');
-let poloniex = new Poloniex(process.env.POLONIEX_API_KEY, process.env.POLONIEX_API_SECRET, { socketTimeout: 60000 });
+const Poloniex = require("poloniex-api-node");
+const poloniex = new Poloniex(process.env.POLONIEX_API_KEY, process.env.POLONIEX_API_SECRET, {
+    socketTimeout: 60000,
+});
 const timer = (timeout) => new Promise((resolve, reject) => {
     try {
         setTimeout(resolve, timeout, null);
@@ -30,10 +32,12 @@ console.log("Start of Epoch: ", startOfEpoch);
 const filename = process.argv[2];
 const saveToCsv = (trades, market) => __awaiter(this, void 0, void 0, function* () {
     try {
+        console.log('Before CSV');
         const data = trades.map(trade => (Object.assign({ market }, trade)));
+        console.log('After CSV');
         const csvTrades = json2csvParser.parse(data);
-        yield fs.outputFile(filename, csvTrades, { 'flag': 'a' });
-        yield fs.outputFile(filename, '\r', { 'flag': 'a' });
+        yield fs.outputFile(filename, csvTrades, { flag: "a" });
+        yield fs.outputFile(filename, "\r", { flag: "a" });
         console.log(`\n${market} Trades Saved: ${trades.length}`);
     }
     catch (err) {
@@ -57,7 +61,6 @@ const tradesMap = new Map();
 const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void 0, function* () {
     try {
         yield timer(150);
-        process.stdout.write('.');
         const trades = yield getTradeHistory(market, startRange.unix(), endRange.unix(), 10000);
         console.log({ trades });
         const sortedTrades = trades.sort((a, b) => {
@@ -85,16 +88,16 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
 });
 (() => __awaiter(this, void 0, void 0, function* () {
     try {
-        if (process.argv.length != 3) {
-            console.log('Usage: gettrades outfile');
+        if (process.argv.length !== 3) {
+            console.log("Usage: gettrades outfile");
             process.exit(1);
         }
         yield fs.remove(process.argv[2]);
         const markets = Object.keys(yield poloniex.returnTicker());
         for (const market of markets) {
-            console.log('\nCapturing Trades Data For Market: ', market);
+            console.log("\nCapturing Trades Data For Market: ", market);
             tradesMap.clear();
-            yield getTrades(market, moment(startOfEpoch), moment().startOf('day'));
+            yield getTrades(market, moment(startOfEpoch), moment().startOf("day"));
             tradesMap.size ? yield saveToCsv(Array.from(tradesMap.values()), market) : _.noop;
         }
         process.exit(0);
