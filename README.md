@@ -21,7 +21,7 @@ not been confirmed.
 ## Installation
 
 	cd ~
-	git clone https://github.com/roderickmonk/poloniex-get-trades.git
+	git clone git@github.com:1057405bcltd/poloniex-get-trades.git
 	cd poloniex-get-trades
 	npm install
 
