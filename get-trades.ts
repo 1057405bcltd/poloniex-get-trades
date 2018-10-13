@@ -2,11 +2,11 @@
 
 import * as moment from "moment";
 import * as _ from "lodash";
-import * as request from "request-promise-native";
 
 const assert = require('assert');
 var fs = require('fs-extra');
-var json2csv = require('json2csv');
+const Json2csvParser = require('json2csv').Parser;
+const json2csvParser = new Json2csvParser({ header: false });
 
 const Poloniex = require('poloniex-api-node');
 let poloniex = new Poloniex(process.env.POLONIEX_API_KEY, process.env.POLONIEX_API_SECRET, { socketTimeout: 60000 });
@@ -21,11 +21,6 @@ const timer = (timeout) => new Promise((resolve, reject) => {
 
 const startOfEpoch = "2016-01-01";
 
-type RemainingMarket = {
-  market: string,
-  firstYear: any
-}
-
 type PoloniexTrade = {
   globalTradeID: string
   date: string
@@ -33,37 +28,15 @@ type PoloniexTrade = {
 
 console.log("Start of Epoch: ", startOfEpoch);
 
-const isSorted = (trades) => {
-
-  // Deal with the vacuous cases first
-  if (trades.length === 0 || trades.length === 1) {
-    return true;
-  }
-
-  let i;
-  if (trades[0].date <= trades[1].date) {
-    for (i = 0; i < trades.length - 1 && moment(trades[i].date) <= moment(trades[i + 1].date); i++) { }
-  } else {
-    for (i = 0; i < trades.length - 1 && moment(trades[i].date) >= moment(trades[i + 1].date); i++) { }
-  }
-
-  return i === trades.length - 1;
-}
-
-const filename = process.argv[3];
-
+const filename = process.argv[2];
 
 const saveToCsv = async (trades: Array<any>, market: string) => {
 
   try {
 
-    const csvTrades = json2csv(
-      {
-        // data: trades,
-        data: trades.map(trade => ({ market, ...trade })),
-        preserveNewLinesInValues: true,
-        hasCSVColumnTitle: false
-      });
+    const data = trades.map(trade => ({ market, ...trade }));
+
+    const csvTrades = json2csvParser.parse(data);
 
     await fs.outputFile(filename, csvTrades, { 'flag': 'a' });
     await fs.outputFile(filename, '\r', { 'flag': 'a' });
@@ -83,6 +56,7 @@ const getTradeHistory = async (market, start, end, limit) => {
   while (true) {
 
     try {
+
       const trades = await poloniex.returnMyTradeHistory(
         market,
         start,
@@ -91,7 +65,9 @@ const getTradeHistory = async (market, start, end, limit) => {
 
       return trades;
     }
+
     catch (err) {
+
       console.log(`${err.message}...retrying`);
       await timer(200);
     }
@@ -106,13 +82,15 @@ const getTrades = async (market: string, startRange, endRange) => {
 
     await timer(150);
 
-    process.stdout.write ('.')
+    process.stdout.write('.')
 
     const trades = await getTradeHistory(
       market,
       startRange.unix(),
       endRange.unix(),
       10000) as Array<PoloniexTrade>;
+
+    console.log({ trades })
 
     const sortedTrades = trades.sort((a, b) => {
 
@@ -126,6 +104,7 @@ const getTrades = async (market: string, startRange, endRange) => {
     }) as Array<PoloniexTrade>;
 
     for (const trade of sortedTrades) {
+
       tradesMap.set(trade.globalTradeID, trade);
     }
 
@@ -144,23 +123,13 @@ const getTrades = async (market: string, startRange, endRange) => {
 
   try {
 
-    if (process.argv.length != 4) {
-      console.log('Usage: gettrades exchange outfile');
+    if (process.argv.length != 3) {
+      console.log('Usage: gettrades outfile');
       process.exit(1);
     }
 
-    switch (process.argv[2].toLowerCase()) {
-
-      case 'poloniex':
-        break;
-
-      default:
-        console.log('Unknown Exchange');
-        process.exit(1);
-    }
-
     // Remove the old file
-    await fs.remove(process.argv[3]);
+    await fs.remove(process.argv[2]);
 
     const markets = Object.keys(await poloniex.returnTicker());
 
@@ -169,10 +138,12 @@ const getTrades = async (market: string, startRange, endRange) => {
       console.log('\nCapturing Trades Data For Market: ', market);
 
       tradesMap.clear();
-      await getTrades(market, moment('2016-01-01'), moment().startOf('day'));
+      await getTrades(market, moment(startOfEpoch), moment().startOf('day'));
 
       tradesMap.size ? await saveToCsv(Array.from(tradesMap.values()), market) : _.noop;
     }
+
+    process.exit(0);
 
   } catch (err) {
     console.log(new Error(err.message));
