@@ -29,15 +29,12 @@ const timer = (timeout) => new Promise((resolve, reject) => {
 });
 const startOfEpoch = "2016-01-01";
 console.log("Start of Epoch: ", startOfEpoch);
-const filename = process.argv[2];
 const saveToCsv = (trades, market) => __awaiter(this, void 0, void 0, function* () {
     try {
-        console.log('Before CSV');
         const data = trades.map(trade => (Object.assign({ market }, trade)));
-        console.log('After CSV');
         const csvTrades = json2csvParser.parse(data);
-        yield fs.outputFile(filename, csvTrades, { flag: "a" });
-        yield fs.outputFile(filename, "\r", { flag: "a" });
+        yield fs.outputFile("trades.csv", csvTrades, { flag: "a" });
+        yield fs.outputFile("trades.csv", "\r", { flag: "a" });
         console.log(`\n${market} Trades Saved: ${trades.length}`);
     }
     catch (err) {
@@ -88,11 +85,7 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
 });
 (() => __awaiter(this, void 0, void 0, function* () {
     try {
-        if (process.argv.length !== 3) {
-            console.log("Usage: gettrades outfile");
-            process.exit(1);
-        }
-        yield fs.remove(process.argv[2]);
+        yield fs.remove("trades.csv");
         const markets = Object.keys(yield poloniex.returnTicker());
         for (const market of markets) {
             console.log("\nCapturing Trades Data For Market: ", market);

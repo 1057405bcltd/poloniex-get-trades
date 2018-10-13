@@ -2,7 +2,6 @@
 
 import * as moment from "moment";
 import * as _ from "lodash";
-
 const assert = require("assert");
 const fs = require("fs-extra");
 const Json2csvParser = require("json2csv").Parser;
@@ -34,29 +33,21 @@ interface IPoloniexTrade {
 
 console.log("Start of Epoch: ", startOfEpoch);
 
-const filename = process.argv[2];
-
 const saveToCsv = async (trades: Array<any>, market: string) => {
 
   try {
 
-    console.log ('Before CSV');
-
+    // Prepend market to all records
     const data = trades.map(trade => ({ market, ...trade }));
-
-    console.log ('After CSV');
-
 
     const csvTrades = json2csvParser.parse(data);
 
-    await fs.outputFile(filename, csvTrades, { flag: "a" });
-    await fs.outputFile(filename, "\r", { flag: "a" });
+    await fs.outputFile("trades.csv", csvTrades, { flag: "a" });
+    await fs.outputFile("trades.csv", "\r", { flag: "a" });
 
     console.log(`\n${market} Trades Saved: ${trades.length}`);
 
   } catch (err) {
-    // Errors are thrown for bad options, or if the data is empty and no fields are provided.
-    // Be sure to provide fields if it is possible that your data array will be empty.
     console.error(err);
     process.exit(1);
   }
@@ -86,6 +77,20 @@ const getTradeHistory = async (market, start, end, limit) => {
 }
 
 const tradesMap = new Map();
+
+/*
+
+The function getTrades (market, start, end) is recursive as follows.
+If the call to getTradeHistory() returns 10000 records (the maximum possible),
+then getTrades recursively calls itself twice, like so:
+
+• getTrades (market, start, midPoint);
+• getTrades (market, midPoint, end);
+
+Some overlap of returns is expected, as duplicates are handled by tradesMap,
+a Javascript Mao.
+
+*/
 
 const getTrades = async (market: string, startRange, endRange) => {
 
@@ -128,28 +133,12 @@ const getTrades = async (market: string, startRange, endRange) => {
   }
 }
 
-/*
-
-The function getTrades (market, start, end) is recursive as follows.
-If the call to getTradeHistory() returns 10000 records (the maximum possible),
-then getTrades recursively calls itself twice, like so:
-
-• getTrades (market, start, midPoint);
-• getTrades (market, midPoint, end);
-
-*/
-
 (async () => {
 
   try {
 
-    if (process.argv.length !== 3) {
-      console.log("Usage: gettrades outfile");
-      process.exit(1);
-    }
-
     // Remove the old file
-    await fs.remove(process.argv[2]);
+    await fs.remove("trades.csv");
 
     const markets = Object.keys(await poloniex.returnTicker());
 

@@ -2,16 +2,21 @@
 
 ## Introduction
 
-The purpose of this software is to retrieve an account's trade history and record it to a CSV file.
+The purpose of this software is to retrieve an account's Poloniex trade history and record it to a CSV file.
+It has been tested on Ubuntu 16.04.  It may also run on other Operating Systems, but this has
+not been confirmed.
 
 ### System Requirements ##
 
-1. Ubuntu 16.04
-2. NodeJS 8.9.4 or later.
-3. The following environemnt variables must be defined:
+<ol>
+<li>Ubuntu 16.04</li>
+<li>NodeJS 10.12 or later</li>
+<li>The following environment variables must be defined:
 
-	POLONIEX_API_KEY
-	POLONIEX_API_SECRET
+	export POLONIEX_API_KEY=...
+	export POLONIEX_API_SECRET=...
+</li>
+</ol>
 
 ## Installation
 
@@ -20,9 +25,12 @@ The purpose of this software is to retrieve an account's trade history and recor
 	cd poloniex-get-trades
 	npm install
 
-##	get-trades ##
+##	Running ##
 
 From the command line:
 
-	node get-trades poloniex <filename>
+	$ node get-trades.js
 
+##	Output ##
+
+The output file is `trades.csv`
