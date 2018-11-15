@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const moment = require("moment");
-const _ = require("lodash");
 const assert = require("assert");
 const fs = require("fs-extra");
 const Json2csvParser = require("json2csv").Parser;
@@ -75,6 +74,7 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
             tradesMap.set(trade.globalTradeID, trade);
         }
         if (trades.length === 10000) {
+            console.log('Split');
             yield getTrades(market, moment(sortedTrades[0].date), endRange);
             yield getTrades(market, startRange, moment(sortedTrades[sortedTrades.length - 1].date));
         }
@@ -91,7 +91,10 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
             console.log("\nCapturing Trades Data For Market: ", market);
             tradesMap.clear();
             yield getTrades(market, moment(startOfEpoch), moment().startOf("day"));
-            tradesMap.size ? yield saveToCsv(Array.from(tradesMap.values()), market) : _.noop;
+            if (tradesMap.size) {
+                console.log(`Converting ${tradesMap.size} ${market} Trades to CSV`);
+                yield saveToCsv(Array.from(tradesMap.values()), market);
+            }
         }
         process.exit(0);
     }

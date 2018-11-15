@@ -124,6 +124,7 @@ const getTrades = async (market: string, startRange, endRange) => {
 
     if (trades.length === 10000) {
 
+      console.log ('Split');
       await getTrades(market, moment(sortedTrades[0].date), endRange);
       await getTrades(market, startRange, moment(sortedTrades[sortedTrades.length - 1].date));
     }
@@ -149,7 +150,10 @@ const getTrades = async (market: string, startRange, endRange) => {
       tradesMap.clear();
       await getTrades(market, moment(startOfEpoch), moment().startOf("day"));
 
-      tradesMap.size ? await saveToCsv(Array.from(tradesMap.values()), market) : _.noop;
+      if (tradesMap.size) {
+        console.log(`Converting ${tradesMap.size} ${market} Trades to CSV`);
+        await saveToCsv(Array.from(tradesMap.values()), market);
+      }
     }
 
     process.exit(0);
