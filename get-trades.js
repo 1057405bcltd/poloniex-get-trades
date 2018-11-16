@@ -59,9 +59,10 @@ const getTradeHistory = (market, start, end, limit) => __awaiter(this, void 0, v
 const tradesMap = new Map();
 const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void 0, function* () {
     try {
+        console.log({ startRange, endRange });
         yield timer(150);
         const trades = yield getTradeHistory(market, startRange.unix(), endRange.unix(), 10000);
-        console.log({ trades });
+        console.log({ length: trades.length });
         const sortedTrades = trades.sort((a, b) => {
             if (moment(a.date) > moment(b.date)) {
                 return -1;
@@ -77,13 +78,13 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
             tradesMap.set(trade.globalTradeID, trade);
         }
         if (trades.length === 10000) {
-            console.log('Split');
-            yield getTrades(market, moment(sortedTrades[0].date), endRange);
-            yield getTrades(market, startRange, moment(sortedTrades[sortedTrades.length - 1].date));
+            yield getTrades(market, startRange, moment(sortedTrades[4999].date));
+            yield getTrades(market, moment(sortedTrades[5000].date), endRange);
         }
     }
     catch (err) {
         console.log(new Error(err.message));
+        process.exit(1);
     }
 });
 (() => __awaiter(this, void 0, void 0, function* () {

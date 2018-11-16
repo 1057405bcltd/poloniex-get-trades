@@ -101,6 +101,8 @@ const getTrades = async (market: string, startRange, endRange) => {
 
   try {
 
+    console.log ({startRange, endRange});
+    
     await timer(150);
 
     const trades = await getTradeHistory(
@@ -109,7 +111,7 @@ const getTrades = async (market: string, startRange, endRange) => {
       endRange.unix(),
       10000) as IPoloniexTrade[];
 
-    console.log({ trades });
+    console.log({ length: trades.length });
 
     const sortedTrades = trades.sort((a, b) => {
 
@@ -129,13 +131,14 @@ const getTrades = async (market: string, startRange, endRange) => {
 
     if (trades.length === 10000) {
 
-      console.log('Split');
-      await getTrades(market, moment(sortedTrades[0].date), endRange);
-      await getTrades(market, startRange, moment(sortedTrades[sortedTrades.length - 1].date));
+      await getTrades(market, startRange, moment(sortedTrades[4999].date));
+      await getTrades(market, moment(sortedTrades[5000].date), endRange);
     }
 
   } catch (err) {
+
     console.log(new Error(err.message));
+    process.exit(1);
   }
 }
 
