@@ -78,7 +78,7 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
             tradesMap.set(trade.globalTradeID, trade);
         }
         if (trades.length === 10000) {
-            const midRange = startRange.add(endRange.diff(startRange) / 2, "ms");
+            const midRange = startRange.add(endRange.diff(startRange, "milliseconds") / 2, "ms");
             console.log({ stuff: endRange.diff(startRange) / 2 });
             console.log({ startRange, midRange, endRange });
             process.exit(1);
