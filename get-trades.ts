@@ -33,11 +33,11 @@ interface IPoloniexTrade {
 
 console.log("Start of Epoch: ", startOfEpoch);
 
-const saveToCsv = async (trades: object[], market: string) => {
+const saveToCsv = async (trades: IPoloniexTrade[], market: string) => {
 
   try {
 
-    for (const trade of trades.values()) {
+    for (const trade of trades) {
 
       // Prepend market to all records
       const data = { market, ...trade };
@@ -102,7 +102,7 @@ const getTrades = async (market: string, startRange, endRange) => {
   try {
 
     console.log ({startRange, endRange});
-    
+
     await timer(150);
 
     const trades = await getTradeHistory(

@@ -30,7 +30,7 @@ const startOfEpoch = "2016-01-01";
 console.log("Start of Epoch: ", startOfEpoch);
 const saveToCsv = (trades, market) => __awaiter(this, void 0, void 0, function* () {
     try {
-        for (const trade of trades.values()) {
+        for (const trade of trades) {
             const data = Object.assign({ market }, trade);
             const csvTrade = json2csvParser.parse(data);
             console.log({ saving: csvTrade });
