@@ -34,24 +34,20 @@ interface IPoloniexTrade {
 
 console.log("Start of Epoch: ", startOfEpoch);
 
-const saveToCsv = async (trades: IPoloniexTrade[], market: string) => {
+const saveToCsv = async (trades: object[], market: string) => {
 
   try {
 
-    for (const trade of trades) {
-
-      // Prepend market to all records
-      const data = { market, ...trade };
-
-      const csvTrade: string = json2csvParser.parse(data);
-      // debug({ saving: csvTrade });
-
-      await fs.outputFile("trades.csv", csvTrade + "\r\n", { flag: "a" });
-    }
+    await fs.outputFile(
+      "trades.csv",
+      json2csvParser.parse(trades),
+      { flag: "a" }
+    );
 
     console.log(`\n${market} Trades Saved: ${trades.length}`);
 
   } catch (err) {
+
     console.error(err);
     process.exit(1);
   }
@@ -122,19 +118,19 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
       }
     }) as IPoloniexTrade[];
 
-    for (const trade of sortedTrades) {
-
-      tradesMap.set(trade.globalTradeID, trade);
-    }
-
     if (trades.length === 10000) {
 
       const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange) / 2));
 
       await getTrades(market, startRange, midRange);
       await getTrades(market, midRange, endRange);
-    }
 
+    } else {
+
+      for (const trade of sortedTrades) {
+        tradesMap.set(trade.globalTradeID, { market, ...trade });
+      }
+    }
   } catch (err) {
 
     console.log(new Error(err.message));

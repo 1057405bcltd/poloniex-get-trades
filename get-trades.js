@@ -31,11 +31,7 @@ const startOfEpoch = "2016-01-01";
 console.log("Start of Epoch: ", startOfEpoch);
 const saveToCsv = (trades, market) => __awaiter(this, void 0, void 0, function* () {
     try {
-        for (const trade of trades) {
-            const data = Object.assign({ market }, trade);
-            const csvTrade = json2csvParser.parse(data);
-            yield fs.outputFile("trades.csv", csvTrade + "\r\n", { flag: "a" });
-        }
+        yield fs.outputFile("trades.csv", json2csvParser.parse(trades), { flag: "a" });
         console.log(`\n${market} Trades Saved: ${trades.length}`);
     }
     catch (err) {
@@ -73,13 +69,15 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
                 return 0;
             }
         });
-        for (const trade of sortedTrades) {
-            tradesMap.set(trade.globalTradeID, trade);
-        }
         if (trades.length === 10000) {
             const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange) / 2));
             yield getTrades(market, startRange, midRange);
             yield getTrades(market, midRange, endRange);
+        }
+        else {
+            for (const trade of sortedTrades) {
+                tradesMap.set(trade.globalTradeID, Object.assign({ market }, trade));
+            }
         }
     }
     catch (err) {
