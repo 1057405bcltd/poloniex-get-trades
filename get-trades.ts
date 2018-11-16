@@ -6,8 +6,9 @@ const assert = require("assert");
 const fs = require("fs-extra");
 const Json2csvParser = require("json2csv").Parser;
 const json2csvParser = new Json2csvParser({ header: false });
-
+const debug = require("debug");
 const Poloniex = require("poloniex-api-node");
+
 const poloniex = new Poloniex(
   process.env.POLONIEX_API_KEY,
   process.env.POLONIEX_API_SECRET,
@@ -149,6 +150,8 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 (async () => {
 
   try {
+
+    debug ("hello");
 
     // Remove the old file
     await fs.remove("trades.csv");

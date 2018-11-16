@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@types/node": "^10.12.9",
+    "debug": "^4.1.0",
     "fs-extra": "^7.0.1",
     "json2csv": "^4.3.0",
     "lodash": "^4.17.11",
