@@ -6,7 +6,7 @@ const assert = require("assert");
 const fs = require("fs-extra");
 const Json2csvParser = require("json2csv").Parser;
 const json2csvParser = new Json2csvParser({ header: false });
-const debug = require("debug");
+const debug = require("debug")("debug");
 const Poloniex = require("poloniex-api-node");
 
 const poloniex = new Poloniex(
