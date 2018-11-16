@@ -2,11 +2,8 @@
 
 import * as moment from "moment";
 import * as _ from "lodash";
-import { constants } from "http2";
 const assert = require("assert");
 const fs = require("fs-extra");
-const Json2csvParser = require("json2csv").Parser;
-const json2csvParser = new Json2csvParser({ header: false });
 const debug = require("debug")("debug");
 const Poloniex = require("poloniex-api-node");
 
@@ -14,7 +11,7 @@ const poloniex = new Poloniex(
   process.env.POLONIEX_API_KEY,
   process.env.POLONIEX_API_SECRET,
   {
-    socketTimeout: 60000,
+    socketTimeout: 15000,
   },
 );
 
@@ -29,8 +26,16 @@ const timer = (timeout) => new Promise((resolve, reject) => {
 const startOfEpoch = "2016-01-01";
 
 interface IPoloniexTrade {
-  globalTradeID: string;
+  globalTradeID: number;
+  tradeID: string;
   date: string;
+  rate: string;
+  amount: string;
+  total: string;
+  fee: string;
+  orderNumber: string;
+  type: string;
+  category: string;
 }
 
 console.log("Start of Epoch: ", startOfEpoch);
@@ -85,7 +90,7 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
       endRange.unix(),
       10000) as IPoloniexTrade[];
 
-    debug({ length: trades.length });
+    debug({ market, length: trades.length, startRange, endRange });
 
     if (trades.length === 10000) {
 
@@ -116,11 +121,9 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
           Object.values(trade).join() + "\n",
           { flag: "a" },
         );
-
-        console.log({ trade });
-
-        process.exit(1);
       }
+
+      console.log(`Captured ${trades.length} Trades, Market: ${market}, Range: ${startRange} -> ${endRange}`);
     }
   } catch (err) {
 

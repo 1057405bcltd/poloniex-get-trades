@@ -4,12 +4,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const moment = require("moment");
 const assert = require("assert");
 const fs = require("fs-extra");
-const Json2csvParser = require("json2csv").Parser;
-const json2csvParser = new Json2csvParser({ header: false });
 const debug = require("debug")("debug");
 const Poloniex = require("poloniex-api-node");
 const poloniex = new Poloniex(process.env.POLONIEX_API_KEY, process.env.POLONIEX_API_SECRET, {
-    socketTimeout: 60000,
+    socketTimeout: 15000,
 });
 const timer = (timeout) => new Promise((resolve, reject) => {
     try {
@@ -38,7 +36,7 @@ const getTrades = async (market, startRange, endRange) => {
         debug({ startRange, endRange });
         await timer(150);
         const trades = await getTradeHistory(market, startRange.unix(), endRange.unix(), 10000);
-        debug({ length: trades.length });
+        debug({ market, length: trades.length, startRange, endRange });
         if (trades.length === 10000) {
             const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange) / 2));
             await getTrades(market, startRange, midRange);
@@ -58,9 +56,8 @@ const getTrades = async (market, startRange, endRange) => {
             });
             for (const trade of sortedTrades) {
                 await fs.outputFile(`./trades/${market}.csv`, Object.values(trade).join() + "\n", { flag: "a" });
-                console.log({ trade });
-                process.exit(1);
             }
+            console.log(`Captured ${trades.length} Trades, Market: ${market}, Range: ${startRange} -> ${endRange}`);
         }
     }
     catch (err) {
