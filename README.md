@@ -27,21 +27,13 @@ not been confirmed.
 
 ##	Running ##
 
-From the command line:
+To view process output at the console and capture it in a log file, log.txt:
 
-	$ node get-trades.js
+	$ node get-trades.js | tee log.txt
 
 A more detailed trace of activity is available by enabling debug mode:
 
-	$ DEBUG=debug node get-trades.js
-
-Process output can be captured in a log file:
-
-	$ node get-trades.js > log.txt
-
-To both view process output in the console and capture it in a log file:
-
-	$ node get-trades.js | tee log.txt
+	$ DEBUG=debug node get-trades.js | tee log.txt
 
 
 ##	Output ##
