@@ -80,8 +80,6 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
   try {
 
-    debug({ startRange, endRange });
-
     await timer(150);
 
     const trades = await getTradeHistory(

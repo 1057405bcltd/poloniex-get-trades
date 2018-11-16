@@ -33,7 +33,6 @@ const getTradeHistory = async (market, start, end, limit) => {
 };
 const getTrades = async (market, startRange, endRange) => {
     try {
-        debug({ startRange, endRange });
         await timer(150);
         const trades = await getTradeHistory(market, startRange.unix(), endRange.unix(), 10000);
         debug({ market, length: trades.length, startRange, endRange });
