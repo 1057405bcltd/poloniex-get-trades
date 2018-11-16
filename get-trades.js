@@ -78,8 +78,11 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
             tradesMap.set(trade.globalTradeID, trade);
         }
         if (trades.length === 10000) {
-            yield getTrades(market, startRange, moment(sortedTrades[4999].date));
-            yield getTrades(market, moment(sortedTrades[5000].date), endRange);
+            const midRange = startRange.add(endRange.diff(startRange) / 2);
+            console.log({ startRange, midRange, endRange });
+            process.exit(1);
+            yield getTrades(market, startRange, midRange);
+            yield getTrades(market, midRange, endRange);
         }
     }
     catch (err) {

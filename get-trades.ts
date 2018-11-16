@@ -97,11 +97,11 @@ a Javascript Mao.
 
 */
 
-const getTrades = async (market: string, startRange, endRange) => {
+const getTrades = async (market: string, startRange: moment.Moment, endRange: moment.Moment) => {
 
   try {
 
-    console.log ({startRange, endRange});
+    console.log({ startRange, endRange });
 
     await timer(150);
 
@@ -131,8 +131,14 @@ const getTrades = async (market: string, startRange, endRange) => {
 
     if (trades.length === 10000) {
 
-      await getTrades(market, startRange, moment(sortedTrades[4999].date));
-      await getTrades(market, moment(sortedTrades[5000].date), endRange);
+      const midRange = startRange.add(endRange.diff(startRange) / 2);
+
+      console.log({ startRange, midRange, endRange });
+
+      process.exit(1);
+
+      await getTrades(market, startRange, midRange);
+      await getTrades(market, midRange, endRange);
     }
 
   } catch (err) {
