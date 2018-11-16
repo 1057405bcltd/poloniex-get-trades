@@ -131,6 +131,19 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
   }
 };
 
+const referenceTrade = {
+  globalTradeID: 48401099,
+  tradeID: "1556039",
+  date: "2016-08-12 19:06:00",
+  rate: "0.02019039",
+  amount: "8.50297500",
+  total: "0.17167838",
+  fee: "0.00000000",
+  orderNumber: "20456928618",
+  type: "buy",
+  category: "exchange",
+};
+
 (async () => {
 
   try {
@@ -143,6 +156,14 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
     for (const market of markets) {
 
       console.log("\nCapturing Trades Data For Market: ", market);
+
+      await fs.outputFile(
+        `./trades/${market}.csv`,
+        Object.keys({ market, ...referenceTrade }).join() + "\n",
+        { flag: "a" },
+      );
+
+      process.exit(1);
 
       tradesMap.clear();
       await getTrades(market, moment(startOfEpoch), moment().startOf("day"));
