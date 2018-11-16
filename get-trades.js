@@ -78,7 +78,7 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
                 }
             });
             for (const trade of sortedTrades) {
-                yield fs.outputFile(`trades-${market}.csv`, Object.values(Object.assign({ market }, trade)).join() + "\n", { flag: "a" });
+                yield fs.outputFile(`trades.csv`, Object.values(Object.assign({ market }, trade)).join() + "\n", { flag: "a" });
             }
         }
     }

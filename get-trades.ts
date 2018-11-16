@@ -137,7 +137,7 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
         // tradesMap.set(trade.globalTradeID, { market, ...trade });
 
         await fs.outputFile(
-          `trades-${market}.csv`,
+          `trades.csv`,
           //@ts-ignore
           Object.values({ market, ...trade }).join() + "\n",
           { flag: "a" }
