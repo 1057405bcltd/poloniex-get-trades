@@ -44,7 +44,7 @@ const saveToCsv = async (trades: IPoloniexTrade[], market: string) => {
       const data = { market, ...trade };
 
       const csvTrade = json2csvParser.parse(data);
-      console.log({ saving: csvTrade });
+      debug({ saving: csvTrade });
 
       await fs.outputFile("trades.csv", csvTrade, { flag: "a" });
       await fs.outputFile("trades.csv", "\r", { flag: "a" });
@@ -102,7 +102,7 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
   try {
 
-    console.log({ startRange, endRange });
+    debug({ startRange, endRange });
 
     await timer(150);
 
@@ -112,7 +112,7 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
       endRange.unix(),
       10000) as IPoloniexTrade[];
 
-    console.log({ length: trades.length });
+    debug({ length: trades.length });
 
     const sortedTrades = trades.sort((a, b) => {
 
@@ -133,8 +133,6 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
     if (trades.length === 10000) {
 
       const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange) / 2));
-
-      console.log({ startRange, midRange, endRange });
 
       await getTrades(market, startRange, midRange);
       await getTrades(market, midRange, endRange);
@@ -170,7 +168,7 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
         await saveToCsv(Array.from(tradesMap.values()), market);
       }
     }
-
+    console.log("That's All Folks");
     process.exit(0);
 
   } catch (err) {

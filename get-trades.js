@@ -34,7 +34,7 @@ const saveToCsv = (trades, market) => __awaiter(this, void 0, void 0, function* 
         for (const trade of trades) {
             const data = Object.assign({ market }, trade);
             const csvTrade = json2csvParser.parse(data);
-            console.log({ saving: csvTrade });
+            debug({ saving: csvTrade });
             yield fs.outputFile("trades.csv", csvTrade, { flag: "a" });
             yield fs.outputFile("trades.csv", "\r", { flag: "a" });
         }
@@ -60,10 +60,10 @@ const getTradeHistory = (market, start, end, limit) => __awaiter(this, void 0, v
 const tradesMap = new Map();
 const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void 0, function* () {
     try {
-        console.log({ startRange, endRange });
+        debug({ startRange, endRange });
         yield timer(150);
         const trades = yield getTradeHistory(market, startRange.unix(), endRange.unix(), 10000);
-        console.log({ length: trades.length });
+        debug({ length: trades.length });
         const sortedTrades = trades.sort((a, b) => {
             if (moment(a.date) > moment(b.date)) {
                 return -1;
@@ -80,7 +80,6 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
         }
         if (trades.length === 10000) {
             const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange) / 2));
-            console.log({ startRange, midRange, endRange });
             yield getTrades(market, startRange, midRange);
             yield getTrades(market, midRange, endRange);
         }
@@ -104,6 +103,7 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
                 yield saveToCsv(Array.from(tradesMap.values()), market);
             }
         }
+        console.log("That's All Folks");
         process.exit(0);
     }
     catch (err) {
