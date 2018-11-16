@@ -133,6 +133,7 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
       const midRange = startRange.add(endRange.diff(startRange) / 2, "ms");
 
+      console.log ({stuff: endRange.diff(startRange)});
       console.log({ startRange, midRange, endRange });
 
       process.exit(1);
