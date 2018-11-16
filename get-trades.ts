@@ -57,8 +57,6 @@ const getTradeHistory = async (market, start, end, limit) => {
   }
 };
 
-const tradesMap = new Map();
-
 /*
 
 The function getTrades (market, start, end) is recursive as follows.
@@ -115,7 +113,7 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
         await fs.outputFile(
           `./trades/${market}.csv`,
-          Object.values({ market, ...trade }).join() + "\n",
+          Object.values(trade).join() + "\n",
           { flag: "a" },
         );
 
@@ -159,13 +157,10 @@ const referenceTrade = {
 
       await fs.outputFile(
         `./trades/${market}.csv`,
-        Object.keys({ market, ...referenceTrade }).join() + "\n",
+        Object.keys(referenceTrade).join() + "\n",
         { flag: "a" },
       );
 
-      process.exit(1);
-
-      tradesMap.clear();
       await getTrades(market, moment(startOfEpoch), moment().startOf("day"));
 
     }

@@ -33,7 +33,6 @@ const getTradeHistory = async (market, start, end, limit) => {
         }
     }
 };
-const tradesMap = new Map();
 const getTrades = async (market, startRange, endRange) => {
     try {
         debug({ startRange, endRange });
@@ -58,7 +57,7 @@ const getTrades = async (market, startRange, endRange) => {
                 }
             });
             for (const trade of sortedTrades) {
-                await fs.outputFile(`./trades/${market}.csv`, Object.values(Object.assign({ market }, trade)).join() + "\n", { flag: "a" });
+                await fs.outputFile(`./trades/${market}.csv`, Object.values(trade).join() + "\n", { flag: "a" });
                 console.log({ trade });
                 process.exit(1);
             }
@@ -87,9 +86,7 @@ const referenceTrade = {
         const markets = Object.keys(await poloniex.returnTicker());
         for (const market of markets) {
             console.log("\nCapturing Trades Data For Market: ", market);
-            await fs.outputFile(`./trades/${market}.csv`, Object.keys(Object.assign({ market }, referenceTrade)).join() + "\n", { flag: "a" });
-            process.exit(1);
-            tradesMap.clear();
+            await fs.outputFile(`./trades/${market}.csv`, Object.keys(referenceTrade).join() + "\n", { flag: "a" });
             await getTrades(market, moment(startOfEpoch), moment().startOf("day"));
         }
         console.log("That's All Folks");
