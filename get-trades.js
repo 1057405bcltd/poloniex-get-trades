@@ -60,25 +60,25 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
         yield timer(150);
         const trades = yield getTradeHistory(market, startRange.unix(), endRange.unix(), 10000);
         debug({ length: trades.length });
-        const sortedTrades = trades.sort((a, b) => {
-            if (moment(a.date) > moment(b.date)) {
-                return 1;
-            }
-            else if (moment(a.date) < moment(b.date)) {
-                return -1;
-            }
-            else {
-                return 0;
-            }
-        });
         if (trades.length === 10000) {
             const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange) / 2));
             yield getTrades(market, startRange, midRange);
             yield getTrades(market, midRange, endRange);
         }
         else {
+            const sortedTrades = trades.sort((a, b) => {
+                if (moment(a.date) > moment(b.date)) {
+                    return 1;
+                }
+                else if (moment(a.date) < moment(b.date)) {
+                    return -1;
+                }
+                else {
+                    return 0;
+                }
+            });
             for (const trade of sortedTrades) {
-                yield fs.outputFile("trades.csv", Object.values(Object.assign({ market }, trade)).join() + "\n", { flag: "a" });
+                yield fs.outputFile(`trades-${market}.csv`, Object.values(Object.assign({ market }, trade)).join() + "\n", { flag: "a" });
             }
         }
     }

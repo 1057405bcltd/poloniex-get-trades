@@ -113,17 +113,6 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
     debug({ length: trades.length });
 
-    const sortedTrades = trades.sort((a, b) => {
-
-      if (moment(a.date) > moment(b.date)) {
-        return 1;
-      } else if (moment(a.date) < moment(b.date)) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }) as IPoloniexTrade[];
-
     if (trades.length === 10000) {
 
       const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange) / 2));
@@ -133,13 +122,24 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
     } else {
 
+      const sortedTrades = trades.sort((a, b) => {
+
+        if (moment(a.date) > moment(b.date)) {
+          return 1;
+        } else if (moment(a.date) < moment(b.date)) {
+          return -1;
+        } else {
+          return 0;
+        }
+      }) as IPoloniexTrade[];
+
       for (const trade of sortedTrades) {
         // tradesMap.set(trade.globalTradeID, { market, ...trade });
 
         await fs.outputFile(
-          "trades.csv",
+          `trades-${market}.csv`,
           //@ts-ignore
-          Object.values({market, ...trade}).join() + "\n",
+          Object.values({ market, ...trade }).join() + "\n",
           { flag: "a" }
         );
       }
