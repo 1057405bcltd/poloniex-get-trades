@@ -72,7 +72,9 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
             }
         });
         if (trades.length === 10000) {
-            yield fs.outputFile("trades.csv", Object.values(Object.assign({ market }, trade)).join() + "\n", { flag: "a" });
+            for (const trade of sortedTrades) {
+                yield fs.outputFile("trades.csv", Object.values(Object.assign({ market }, trade)).join() + "\n", { flag: "a" });
+            }
             const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange) / 2));
             yield getTrades(market, startRange, midRange);
             yield getTrades(market, midRange, endRange);
