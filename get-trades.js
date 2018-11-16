@@ -79,7 +79,7 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
         }
         if (trades.length === 10000) {
             const midRange = startRange.add(endRange.diff(startRange, "days") / 2, "days");
-            console.log({ stuff: endRange.diff(startRange) / 2 });
+            console.log({ stuff: endRange.diff(startRange, "days") / 2 });
             console.log({ startRange, midRange, endRange });
             process.exit(1);
             yield getTrades(market, startRange, midRange);
