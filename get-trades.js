@@ -30,10 +30,13 @@ const startOfEpoch = "2016-01-01";
 console.log("Start of Epoch: ", startOfEpoch);
 const saveToCsv = (trades, market) => __awaiter(this, void 0, void 0, function* () {
     try {
-        const data = trades.map(trade => (Object.assign({ market }, trade)));
-        const csvTrades = json2csvParser.parse(data);
-        yield fs.outputFile("trades.csv", csvTrades, { flag: "a" });
-        yield fs.outputFile("trades.csv", "\r", { flag: "a" });
+        for (const trade of trades.values()) {
+            const data = Object.assign({ market }, trade);
+            const csvTrade = json2csvParser.parse(data);
+            console.log({ saving: csvTrade });
+            yield fs.outputFile("trades.csv", csvTrade, { flag: "a" });
+            yield fs.outputFile("trades.csv", "\r", { flag: "a" });
+        }
         console.log(`\n${market} Trades Saved: ${trades.length}`);
     }
     catch (err) {

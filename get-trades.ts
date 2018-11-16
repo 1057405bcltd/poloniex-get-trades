@@ -33,17 +33,22 @@ interface IPoloniexTrade {
 
 console.log("Start of Epoch: ", startOfEpoch);
 
-const saveToCsv = async (trades: Array<any>, market: string) => {
+const saveToCsv = async (trades: object[], market: string) => {
 
   try {
 
-    // Prepend market to all records
-    const data = trades.map(trade => ({ market, ...trade }));
+    for (const trade of trades.values()) {
 
-    const csvTrades = json2csvParser.parse(data);
+      // Prepend market to all records
+      const data = { market, ...trade };
 
-    await fs.outputFile("trades.csv", csvTrades, { flag: "a" });
-    await fs.outputFile("trades.csv", "\r", { flag: "a" });
+      const csvTrade = json2csvParser.parse(data);
+      console.log({ saving: csvTrade });
+
+      await fs.outputFile("trades.csv", csvTrade, { flag: "a" });
+      await fs.outputFile("trades.csv", "\r", { flag: "a" });
+
+    }
 
     console.log(`\n${market} Trades Saved: ${trades.length}`);
 
@@ -124,7 +129,7 @@ const getTrades = async (market: string, startRange, endRange) => {
 
     if (trades.length === 10000) {
 
-      console.log ('Split');
+      console.log('Split');
       await getTrades(market, moment(sortedTrades[0].date), endRange);
       await getTrades(market, startRange, moment(sortedTrades[sortedTrades.length - 1].date));
     }
