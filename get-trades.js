@@ -21,18 +21,6 @@ const timer = (timeout) => new Promise((resolve, reject) => {
 });
 const startOfEpoch = "2016-01-01";
 console.log("Start of Epoch: ", startOfEpoch);
-const saveToCsv = async (trades, market) => {
-    try {
-        for (const trade of trades) {
-            await fs.outputFile("trades.csv", Object.values(trade).join() + "\n", { flag: "a" });
-        }
-        console.log(`\n${market} Trades Saved: ${trades.length}`);
-    }
-    catch (err) {
-        console.error(err);
-        process.exit(1);
-    }
-};
 const getTradeHistory = async (market, start, end, limit) => {
     while (true) {
         try {
@@ -70,7 +58,9 @@ const getTrades = async (market, startRange, endRange) => {
                 }
             });
             for (const trade of sortedTrades) {
-                await fs.outputFile(`./trades-${market}.csv`, Object.values(Object.assign({ market }, trade)).join() + "\n", { flag: "a" });
+                await fs.outputFile(`./trades/${market}.csv`, Object.values(Object.assign({ market }, trade)).join() + "\n", { flag: "a" });
+                console.log({ trade });
+                process.exit(1);
             }
         }
     }
@@ -82,10 +72,6 @@ const getTrades = async (market, startRange, endRange) => {
 (async () => {
     try {
         await fs.remove("./trades");
-        const junkTime = moment();
-        console.log(junkTime);
-        console.log(junkTime.clone().add(1, "seconds"));
-        process.exit(0);
         const markets = Object.keys(await poloniex.returnTicker());
         for (const market of markets) {
             console.log("\nCapturing Trades Data For Market: ", market);

@@ -35,30 +35,6 @@ interface IPoloniexTrade {
 
 console.log("Start of Epoch: ", startOfEpoch);
 
-const saveToCsv = async (trades: object[], market: string) => {
-
-  try {
-
-    for (const trade of trades) {
-
-      await fs.outputFile(
-        "trades.csv",
-        //@ts-ignore
-        Object.values(trade).join() + "\n",
-        { flag: "a" }
-      );
-
-    }
-
-    console.log(`\n${market} Trades Saved: ${trades.length}`);
-
-  } catch (err) {
-
-    console.error(err);
-    process.exit(1);
-  }
-}
-
 const getTradeHistory = async (market, start, end, limit) => {
 
   while (true) {
@@ -79,7 +55,7 @@ const getTradeHistory = async (market, start, end, limit) => {
       await timer(200);
     }
   }
-}
+};
 
 const tradesMap = new Map();
 
@@ -136,13 +112,16 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
       }) as IPoloniexTrade[];
 
       for (const trade of sortedTrades) {
-        // tradesMap.set(trade.globalTradeID, { market, ...trade });
 
         await fs.outputFile(
-          `./trades-${market}.csv`,
+          `./trades/${market}.csv`,
           Object.values({ market, ...trade }).join() + "\n",
-          { flag: "a" }
+          { flag: "a" },
         );
+
+        console.log({ trade });
+
+        process.exit(1);
       }
     }
   } catch (err) {
@@ -150,7 +129,7 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
     console.log(new Error(err.message));
     process.exit(1);
   }
-}
+};
 
 (async () => {
 
@@ -158,13 +137,6 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
     // Remove data from a previous run
     await fs.remove("./trades");
-
-    const junkTime = moment();
-    console.log(junkTime);
-    console.log(junkTime.clone().add(1, "seconds"));
-
-    process.exit(0);
-
 
     const markets = Object.keys(await poloniex.returnTicker());
 
