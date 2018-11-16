@@ -116,9 +116,9 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
     const sortedTrades = trades.sort((a, b) => {
 
       if (moment(a.date) > moment(b.date)) {
-        return -1;
-      } else if (moment(a.date) < moment(b.date)) {
         return 1;
+      } else if (moment(a.date) < moment(b.date)) {
+        return -1;
       } else {
         return 0;
       }
@@ -169,10 +169,6 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
       tradesMap.clear();
       await getTrades(market, moment(startOfEpoch), moment().startOf("day"));
 
-      if (tradesMap.size) {
-        console.log(`Converting ${tradesMap.size} ${market} Trades to CSV`);
-        // await saveToCsv(Array.from(tradesMap.values()), market);
-      }
     }
     console.log("That's All Folks");
     process.exit(0);

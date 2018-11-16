@@ -62,10 +62,10 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
         debug({ length: trades.length });
         const sortedTrades = trades.sort((a, b) => {
             if (moment(a.date) > moment(b.date)) {
-                return -1;
+                return 1;
             }
             else if (moment(a.date) < moment(b.date)) {
-                return 1;
+                return -1;
             }
             else {
                 return 0;
@@ -96,9 +96,6 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
             console.log("\nCapturing Trades Data For Market: ", market);
             tradesMap.clear();
             yield getTrades(market, moment(startOfEpoch), moment().startOf("day"));
-            if (tradesMap.size) {
-                console.log(`Converting ${tradesMap.size} ${market} Trades to CSV`);
-            }
         }
         console.log("That's All Folks");
         process.exit(0);
