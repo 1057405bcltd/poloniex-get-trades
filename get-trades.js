@@ -34,9 +34,7 @@ const saveToCsv = (trades, market) => __awaiter(this, void 0, void 0, function* 
         for (const trade of trades) {
             const data = Object.assign({ market }, trade);
             const csvTrade = json2csvParser.parse(data);
-            debug({ saving: csvTrade });
-            yield fs.outputFile("trades.csv", csvTrade, { flag: "a" });
-            yield fs.outputFile("trades.csv", "\r", { flag: "a" });
+            yield fs.outputFile("trades.csv", csvTrade + "\r\n", { flag: "a" });
         }
         console.log(`\n${market} Trades Saved: ${trades.length}`);
     }

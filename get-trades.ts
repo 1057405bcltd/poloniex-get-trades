@@ -43,12 +43,10 @@ const saveToCsv = async (trades: IPoloniexTrade[], market: string) => {
       // Prepend market to all records
       const data = { market, ...trade };
 
-      const csvTrade = json2csvParser.parse(data);
-      debug({ saving: csvTrade });
+      const csvTrade: string = json2csvParser.parse(data);
+      // debug({ saving: csvTrade });
 
-      await fs.outputFile("trades.csv", csvTrade, { flag: "a" });
-      await fs.outputFile("trades.csv", "\r", { flag: "a" });
-
+      await fs.outputFile("trades.csv", csvTrade + "\r\n", { flag: "a" });
     }
 
     console.log(`\n${market} Trades Saved: ${trades.length}`);
@@ -72,9 +70,8 @@ const getTradeHistory = async (market, start, end, limit) => {
         limit) as IPoloniexTrade[];
 
       return trades;
-    }
 
-    catch (err) {
+    } catch (err) {
 
       console.log(`${err.message}...retrying`);
       await timer(200);
@@ -149,7 +146,7 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
   try {
 
-    debug ("hello");
+    debug("hello");
 
     // Remove the old file
     await fs.remove("trades.csv");
