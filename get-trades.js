@@ -78,7 +78,7 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
             tradesMap.set(trade.globalTradeID, trade);
         }
         if (trades.length === 10000) {
-            const midRange = startRange.clone().add(1, "days");
+            const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange, "days") / 2), "days");
             console.log({ stuff: Math.floor(endRange.diff(startRange, "days") / 2) });
             console.log({ startRange, midRange, endRange });
             process.exit(1);

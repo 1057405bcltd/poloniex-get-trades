@@ -131,8 +131,8 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
     if (trades.length === 10000) {
 
-      // const midRange = startRange.add(Math.floor(endRange.diff(startRange, "days") / 2), "days");
-      const midRange = startRange.clone().add(1, "days");
+      const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange, "days") / 2), "days");
+      // const midRange = startRange.clone().add(1, "days");
 
       console.log({ stuff: Math.floor(endRange.diff(startRange, "days") / 2) });
       console.log({ startRange, midRange, endRange });
