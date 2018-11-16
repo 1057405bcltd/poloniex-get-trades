@@ -126,6 +126,13 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
     if (trades.length === 10000) {
 
+      await fs.outputFile(
+        "trades.csv",
+        //@ts-ignore
+        Object.values({market, ...trade}).join() + "\n",
+        { flag: "a" }
+      );
+
       const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange) / 2));
 
       await getTrades(market, startRange, midRange);
