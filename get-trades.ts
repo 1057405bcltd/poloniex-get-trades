@@ -121,7 +121,9 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
         );
       }
 
-      console.log(`Captured ${trades.length} Trades, Market: ${market}, Range: ${startRange} -> ${endRange}`);
+      if (trades.length > 0) {
+        console.log(`Captured ${trades.length} Trades, Market: ${market}, Range: ${startRange} -> ${endRange}`);
+      }
     }
   } catch (err) {
 
@@ -154,7 +156,7 @@ const referenceTrade = {
 
     for (const market of markets) {
 
-      console.log("\nCapturing Trades Data For Market: ", market);
+      console.log("Capturing Trades Data For Market: ", market);
 
       await fs.outputFile(
         `./trades/${market}.csv`,

@@ -56,7 +56,9 @@ const getTrades = async (market, startRange, endRange) => {
             for (const trade of sortedTrades) {
                 await fs.outputFile(`./trades/${market}.csv`, Object.values(trade).join() + "\n", { flag: "a" });
             }
-            console.log(`Captured ${trades.length} Trades, Market: ${market}, Range: ${startRange} -> ${endRange}`);
+            if (trades.length > 0) {
+                console.log(`Captured ${trades.length} Trades, Market: ${market}, Range: ${startRange} -> ${endRange}`);
+            }
         }
     }
     catch (err) {
@@ -81,7 +83,7 @@ const referenceTrade = {
         await fs.remove("./trades");
         const markets = Object.keys(await poloniex.returnTicker());
         for (const market of markets) {
-            console.log("\nCapturing Trades Data For Market: ", market);
+            console.log("Capturing Trades Data For Market: ", market);
             await fs.outputFile(`./trades/${market}.csv`, Object.keys(referenceTrade).join() + "\n", { flag: "a" });
             await getTrades(market, moment(startOfEpoch), moment().startOf("day"));
         }
