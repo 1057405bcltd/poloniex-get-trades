@@ -118,7 +118,9 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
       const midRange = startRange.clone().add(Math.floor(endRange.diff(startRange) / 2));
 
       await getTrades(market, startRange, midRange);
-      await getTrades(market, midRange, endRange);
+
+      // Ensure no overlap by adding 1 second to the start range
+      await getTrades(market, midRange.clone().add(1, "seconds"), endRange);
 
     } else {
 
@@ -137,8 +139,7 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
         // tradesMap.set(trade.globalTradeID, { market, ...trade });
 
         await fs.outputFile(
-          `trades.csv`,
-          //@ts-ignore
+          `./trades-${market}.csv`,
           Object.values({ market, ...trade }).join() + "\n",
           { flag: "a" }
         );
@@ -155,10 +156,15 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
   try {
 
-    debug("hello");
+    // Remove data from a previous run
+    await fs.remove("./trades");
 
-    // Remove the old file
-    await fs.remove("trades.csv");
+    const junkTime = moment();
+    console.log(junkTime);
+    console.log(junkTime.clone().add(1, "seconds"));
+
+    process.exit(0);
+
 
     const markets = Object.keys(await poloniex.returnTicker());
 

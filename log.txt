@@ -1,0 +1,239 @@
+Start of Epoch:  2016-01-01
+
+Capturing Trades Data For Market:  BTC_BCN
+
+Capturing Trades Data For Market:  BTC_BTS
+
+Capturing Trades Data For Market:  BTC_BURST
+
+Capturing Trades Data For Market:  BTC_CLAM
+
+Capturing Trades Data For Market:  BTC_DASH
+ESOCKETTIMEDOUT...retrying
+
+Capturing Trades Data For Market:  BTC_DGB
+
+Capturing Trades Data For Market:  BTC_DOGE
+
+Capturing Trades Data For Market:  BTC_GAME
+
+Capturing Trades Data For Market:  BTC_HUC
+
+Capturing Trades Data For Market:  BTC_LTC
+
+Capturing Trades Data For Market:  BTC_MAID
+
+Capturing Trades Data For Market:  BTC_OMNI
+
+Capturing Trades Data For Market:  BTC_NAV
+
+Capturing Trades Data For Market:  BTC_NMC
+
+Capturing Trades Data For Market:  BTC_NXT
+
+Capturing Trades Data For Market:  BTC_PPC
+
+Capturing Trades Data For Market:  BTC_STR
+
+Capturing Trades Data For Market:  BTC_SYS
+
+Capturing Trades Data For Market:  BTC_VIA
+
+Capturing Trades Data For Market:  BTC_VTC
+
+Capturing Trades Data For Market:  BTC_XCP
+
+Capturing Trades Data For Market:  BTC_XEM
+
+Capturing Trades Data For Market:  BTC_XMR
+ESOCKETTIMEDOUT...retrying
+
+Capturing Trades Data For Market:  BTC_XPM
+
+Capturing Trades Data For Market:  BTC_XRP
+
+Capturing Trades Data For Market:  USDT_BTC
+
+Capturing Trades Data For Market:  USDT_DASH
+
+Capturing Trades Data For Market:  USDT_LTC
+
+Capturing Trades Data For Market:  USDT_NXT
+
+Capturing Trades Data For Market:  USDT_STR
+
+Capturing Trades Data For Market:  USDT_XMR
+
+Capturing Trades Data For Market:  USDT_XRP
+
+Capturing Trades Data For Market:  XMR_BCN
+
+Capturing Trades Data For Market:  XMR_DASH
+
+Capturing Trades Data For Market:  XMR_LTC
+
+Capturing Trades Data For Market:  XMR_MAID
+
+Capturing Trades Data For Market:  XMR_NXT
+
+Capturing Trades Data For Market:  BTC_ETH
+ESOCKETTIMEDOUT...retrying
+ESOCKETTIMEDOUT...retrying
+ESOCKETTIMEDOUT...retrying
+ESOCKETTIMEDOUT...retrying
+ESOCKETTIMEDOUT...retrying
+ESOCKETTIMEDOUT...retrying
+ESOCKETTIMEDOUT...retrying
+ESOCKETTIMEDOUT...retrying
+ESOCKETTIMEDOUT...retrying
+ESOCKETTIMEDOUT...retrying
+
+Capturing Trades Data For Market:  USDT_ETH
+
+Capturing Trades Data For Market:  BTC_SC
+
+Capturing Trades Data For Market:  BTC_FCT
+ESOCKETTIMEDOUT...retrying
+
+Capturing Trades Data For Market:  BTC_DCR
+
+Capturing Trades Data For Market:  BTC_LSK
+
+Capturing Trades Data For Market:  ETH_LSK
+
+Capturing Trades Data For Market:  BTC_LBC
+
+Capturing Trades Data For Market:  BTC_STEEM
+
+Capturing Trades Data For Market:  ETH_STEEM
+
+Capturing Trades Data For Market:  BTC_SBD
+
+Capturing Trades Data For Market:  BTC_ETC
+
+Capturing Trades Data For Market:  ETH_ETC
+
+Capturing Trades Data For Market:  USDT_ETC
+
+Capturing Trades Data For Market:  BTC_REP
+
+Capturing Trades Data For Market:  USDT_REP
+
+Capturing Trades Data For Market:  ETH_REP
+
+Capturing Trades Data For Market:  BTC_ARDR
+
+Capturing Trades Data For Market:  BTC_ZEC
+
+Capturing Trades Data For Market:  ETH_ZEC
+
+Capturing Trades Data For Market:  USDT_ZEC
+
+Capturing Trades Data For Market:  XMR_ZEC
+
+Capturing Trades Data For Market:  BTC_STRAT
+
+Capturing Trades Data For Market:  BTC_PASC
+
+Capturing Trades Data For Market:  BTC_GNT
+
+Capturing Trades Data For Market:  ETH_GNT
+
+Capturing Trades Data For Market:  BTC_BCH
+
+Capturing Trades Data For Market:  ETH_BCH
+
+Capturing Trades Data For Market:  USDT_BCH
+
+Capturing Trades Data For Market:  BTC_ZRX
+
+Capturing Trades Data For Market:  ETH_ZRX
+
+Capturing Trades Data For Market:  BTC_CVC
+
+Capturing Trades Data For Market:  ETH_CVC
+
+Capturing Trades Data For Market:  BTC_OMG
+
+Capturing Trades Data For Market:  ETH_OMG
+
+Capturing Trades Data For Market:  BTC_GAS
+
+Capturing Trades Data For Market:  ETH_GAS
+
+Capturing Trades Data For Market:  BTC_STORJ
+
+Capturing Trades Data For Market:  BTC_EOS
+
+Capturing Trades Data For Market:  ETH_EOS
+
+Capturing Trades Data For Market:  USDT_EOS
+
+Capturing Trades Data For Market:  BTC_SNT
+
+Capturing Trades Data For Market:  ETH_SNT
+
+Capturing Trades Data For Market:  USDT_SNT
+
+Capturing Trades Data For Market:  BTC_KNC
+
+Capturing Trades Data For Market:  ETH_KNC
+
+Capturing Trades Data For Market:  USDT_KNC
+
+Capturing Trades Data For Market:  BTC_BAT
+
+Capturing Trades Data For Market:  ETH_BAT
+
+Capturing Trades Data For Market:  USDT_BAT
+
+Capturing Trades Data For Market:  BTC_LOOM
+
+Capturing Trades Data For Market:  ETH_LOOM
+
+Capturing Trades Data For Market:  USDT_LOOM
+
+Capturing Trades Data For Market:  USDT_DOGE
+
+Capturing Trades Data For Market:  USDT_GNT
+
+Capturing Trades Data For Market:  USDT_LSK
+
+Capturing Trades Data For Market:  USDT_SC
+
+Capturing Trades Data For Market:  USDT_ZRX
+
+Capturing Trades Data For Market:  BTC_QTUM
+
+Capturing Trades Data For Market:  ETH_QTUM
+
+Capturing Trades Data For Market:  USDT_QTUM
+
+Capturing Trades Data For Market:  USDC_BTC
+
+Capturing Trades Data For Market:  USDC_ETH
+
+Capturing Trades Data For Market:  USDC_USDT
+
+Capturing Trades Data For Market:  BTC_MANA
+
+Capturing Trades Data For Market:  ETH_MANA
+
+Capturing Trades Data For Market:  USDT_MANA
+
+Capturing Trades Data For Market:  BTC_BNT
+
+Capturing Trades Data For Market:  ETH_BNT
+
+Capturing Trades Data For Market:  USDT_BNT
+
+Capturing Trades Data For Market:  USDC_BCH
+
+Capturing Trades Data For Market:  BTC_BCHABC
+
+Capturing Trades Data For Market:  USDC_BCHABC
+
+Capturing Trades Data For Market:  BTC_BCHSV
+
+Capturing Trades Data For Market:  USDC_BCHSV
+That's All Folks
