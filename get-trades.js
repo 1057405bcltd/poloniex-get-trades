@@ -31,7 +31,9 @@ const startOfEpoch = "2016-01-01";
 console.log("Start of Epoch: ", startOfEpoch);
 const saveToCsv = (trades, market) => __awaiter(this, void 0, void 0, function* () {
     try {
-        yield fs.outputFile("trades.csv", json2csvParser.parse(trades), { flag: "a" });
+        for (const trade of trades) {
+            yield fs.outputFile("trades.csv", Object.values(trade).join() + "\n", { flag: "a" });
+        }
         console.log(`\n${market} Trades Saved: ${trades.length}`);
     }
     catch (err) {
@@ -76,7 +78,7 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
         }
         else {
             for (const trade of sortedTrades) {
-                tradesMap.set(trade.globalTradeID, Object.assign({ market }, trade));
+                yield fs.outputFile("trades.csv", Object.values(Object.assign({ market }, trade)).join() + "\n", { flag: "a" });
             }
         }
     }
@@ -96,7 +98,6 @@ const getTrades = (market, startRange, endRange) => __awaiter(this, void 0, void
             yield getTrades(market, moment(startOfEpoch), moment().startOf("day"));
             if (tradesMap.size) {
                 console.log(`Converting ${tradesMap.size} ${market} Trades to CSV`);
-                yield saveToCsv(Array.from(tradesMap.values()), market);
             }
         }
         console.log("That's All Folks");

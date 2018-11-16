@@ -2,6 +2,7 @@
 
 import * as moment from "moment";
 import * as _ from "lodash";
+import { constants } from "http2";
 const assert = require("assert");
 const fs = require("fs-extra");
 const Json2csvParser = require("json2csv").Parser;
@@ -38,11 +39,16 @@ const saveToCsv = async (trades: object[], market: string) => {
 
   try {
 
-    await fs.outputFile(
-      "trades.csv",
-      json2csvParser.parse(trades),
-      { flag: "a" }
-    );
+    for (const trade of trades) {
+
+      await fs.outputFile(
+        "trades.csv",
+        //@ts-ignore
+        Object.values(trade).join() + "\n",
+        { flag: "a" }
+      );
+
+    }
 
     console.log(`\n${market} Trades Saved: ${trades.length}`);
 
@@ -128,7 +134,14 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
     } else {
 
       for (const trade of sortedTrades) {
-        tradesMap.set(trade.globalTradeID, { market, ...trade });
+        // tradesMap.set(trade.globalTradeID, { market, ...trade });
+
+        await fs.outputFile(
+          "trades.csv",
+          //@ts-ignore
+          Object.values({market, ...trade}).join() + "\n",
+          { flag: "a" }
+        );
       }
     }
   } catch (err) {
@@ -158,7 +171,7 @@ const getTrades = async (market: string, startRange: moment.Moment, endRange: mo
 
       if (tradesMap.size) {
         console.log(`Converting ${tradesMap.size} ${market} Trades to CSV`);
-        await saveToCsv(Array.from(tradesMap.values()), market);
+        // await saveToCsv(Array.from(tradesMap.values()), market);
       }
     }
     console.log("That's All Folks");
